@@ -10,17 +10,17 @@ import {
 
 const drawerWidth = 240;
 const categories = [
-  "Technology",
-  "Science",
-  "Finance",
-  "Society",
-  "Entertainment",
-  "Health",
-  "History",
-  "News",
+  "technology",
+  "science",
+  "finance",
+  "society",
+  "entertainment",
+  "health",
+  "history",
+  "news",
 ];
 
-export default function FactCategories() {
+export default function FactCategories({ setCurrentCategory }) {
   return (
     <>
       <Box
@@ -31,18 +31,21 @@ export default function FactCategories() {
       >
         <Box sx={{ overflow: "auto", margin: 0 }}>
           <Paper variant="outlined">
-            <ListItem key="All" disablePadding>
-              <ListItemButton>
-                <ListItemText primary="All Categories" />
+            <ListItem key="all" disablePadding>
+              <ListItemButton onClick={() => setCurrentCategory("all")}>
+                <ListItemText primary="ALL" />
               </ListItemButton>
             </ListItem>
           </Paper>
           <List>
             <Paper elevation={3}>
-              {categories.map((text, index) => (
+              {categories.map((text) => (
                 <ListItem key={text} disablePadding>
-                  <ListItemButton>
-                    <ListItemText primary={text} />
+                  <ListItemButton
+                    key={text}
+                    onClick={() => setCurrentCategory(text)}
+                  >
+                    <ListItemText primary={text.toUpperCase()} />
                   </ListItemButton>
                 </ListItem>
               ))}

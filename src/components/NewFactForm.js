@@ -8,6 +8,7 @@ import {
   FormControl,
   Paper,
 } from "@mui/material";
+import supabase from "../supabase";
 
 const categories = [
   { name: "technology" },
@@ -20,12 +21,16 @@ const categories = [
   { name: "news" },
 ];
 
-export default function NewFactForm({ setFacts }) {
+export default function NewFactForm({ setFacts, onNewFormToggle }) {
   const [fact, setFact] = useState({
     text: "",
-    source: "https://mui.com",
+    source: "",
     category: "",
   });
+
+  const text = fact.text;
+  const source = fact.source;
+  const category = fact.category;
 
   const handleFactChanged = (event) => {
     const { name, value } = event.target;
@@ -34,6 +39,8 @@ export default function NewFactForm({ setFacts }) {
       [name]: value,
     });
   };
+
+  const [isUploading, setIsUploading] = useState(false);
 
   const isValidUrl = (urlString) => {
     var urlPattern = new RegExp(
@@ -48,7 +55,7 @@ export default function NewFactForm({ setFacts }) {
     return !!urlPattern.test(urlString);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (
@@ -57,24 +64,31 @@ export default function NewFactForm({ setFacts }) {
       fact.category &&
       fact.text.length <= 200
     ) {
-      const newFact = {
-        id: Date.now(),
-        text: fact.text,
-        source: fact.source,
-        category: fact.category,
-        votesInteresting: 0,
-        votesMindblowing: 0,
-        votesFalse: 0,
-        createdIn: new Date().getFullYear(),
-      };
+      setIsUploading(true);
+      const { data: newFact, error } = await supabase
+        .from("facts")
+        .insert([
+          {
+            text,
+            source,
+            category,
+          },
+        ])
+        .select();
 
-      setFacts((facts) => [newFact, ...facts]);
+      setIsUploading(false);
+
+      //needs better error handling
+      if (!error) setFacts((facts) => [newFact[0], ...facts]);
+      else alert("Ups! Error happened while uploading Your fact.");
 
       setFact((prevFact) => ({
         ...prevFact,
         text: "",
         category: "",
       }));
+
+      onNewFormToggle(false);
     }
   };
 
@@ -95,6 +109,7 @@ export default function NewFactForm({ setFacts }) {
                 autoComplete="off"
                 helperText={200 - fact.text.length}
                 autoFocus
+                disabled={isUploading}
               />
               <TextField
                 margin="normal"
@@ -107,12 +122,14 @@ export default function NewFactForm({ setFacts }) {
                 id="source"
                 helperText="Trustworthy source"
                 autoComplete="off"
+                disabled={isUploading}
               />
               <Select
                 id="category"
                 name="category"
                 value={fact.category}
                 displayEmpty
+                disabled={isUploading}
                 onChange={(event) => handleFactChanged(event)}
               >
                 <MenuItem value="" default disabled>
@@ -124,7 +141,12 @@ export default function NewFactForm({ setFacts }) {
                   </MenuItem>
                 ))}
               </Select>
-              <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                disabled={isUploading}
+              >
                 Submit
               </Button>
             </FormControl>

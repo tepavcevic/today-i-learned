@@ -1,64 +1,70 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container } from "@mui/system";
+import supabase from "../supabase";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
+import Loading from "./Loading";
 import FactList from "./FactList";
 import NewFactForm from "./NewFactForm";
 
-const initialFacts = [
-  {
-    id: 1,
-    text: "React is being developed by Meta (formerly facebook)",
-    source: "https://opensource.fb.com/",
-    category: "technology",
-    votesInteresting: 24,
-    votesMindblowing: 9,
-    votesFalse: 4,
-    createdIn: 2021,
-  },
-  {
-    id: 2,
-    text: "Millennial dads spend 3 times as much time with their kids than their fathers spent with them. In 1982, 43% of fathers had never changed a diaper. Today, that number is down to 3%",
-    source:
-      "https://www.mother.ly/parenting/millennial-dads-spend-more-time-with-their-kids",
-    category: "society",
-    votesInteresting: 11,
-    votesMindblowing: 2,
-    votesFalse: 0,
-    createdIn: 2019,
-  },
-  {
-    id: 3,
-    text: "Lisbon is the capital of Portugal",
-    source: "https://en.wikipedia.org/wiki/Lisbon",
-    category: "society",
-    votesInteresting: 8,
-    votesMindblowing: 3,
-    votesFalse: 1,
-    createdIn: 2015,
-  },
-];
-
 export default function App() {
-  const [facts, setFacts] = useState(initialFacts);
+  const [facts, setFacts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [currentCategory, setCurrentCategory] = useState("all");
   const [showForm, setShowForm] = useState(false);
   const handleNewFormToggle = () => {
     setShowForm((prevShowForm) => !prevShowForm);
   };
+
+  useEffect(
+    function () {
+      async function getFacts() {
+        setIsLoading(true);
+
+        let query = supabase.from("facts").select("*");
+
+        if (currentCategory !== "all")
+          query = query.eq("category", currentCategory);
+
+        const { data: facts, error } = await query
+          .order("votesInteresting", { ascending: false })
+          .limit(1000);
+        // might implement pagination at later point in time
+
+        //need to add better error handling
+        if (!error) setFacts(facts);
+        else alert("Error! Data not available, please try again.");
+        setIsLoading(false);
+      }
+      getFacts();
+    },
+    [currentCategory]
+  );
+
   return (
     <>
-      <Header onNewFormToggle={handleNewFormToggle} />
-      {showForm && <NewFactForm setFacts={setFacts} />}
+      <Header showForm={showForm} setShowForm={setShowForm} />
+      {showForm && (
+        <NewFactForm
+          setFacts={setFacts}
+          onNewFormToggle={handleNewFormToggle}
+        />
+      )}
 
       <Container
         sx={{
           display: "flex",
           justifyContent: "start",
           paddingTop: 5,
+          height: "95vh",
         }}
       >
-        <Sidebar />
-        <FactList facts={facts} />
+        <Sidebar setCurrentCategory={setCurrentCategory} />
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <FactList setFacts={setFacts} facts={facts} />
+        )}
       </Container>
     </>
   );

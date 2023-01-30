@@ -8,11 +8,11 @@ import {
 } from "@mui/material";
 import Image from "mui-image";
 
-export default function Header({ onNewFormToggle }) {
+export default function Header({ showForm, setShowForm }) {
   return (
     <>
       <CssBaseline />
-      <AppBar sx={{ position: "relative" }}>
+      <AppBar position="sticky">
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Box display="flex" alignItems="center">
             <Image src="logo.png" width={40} height={40} />
@@ -20,8 +20,12 @@ export default function Header({ onNewFormToggle }) {
               Today I Learned
             </Typography>
           </Box>
-          <Button variant="contained" color="primary" onClick={onNewFormToggle}>
-            Share a fact
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => setShowForm((show) => !show)}
+          >
+            {!showForm ? "Share a fact" : "Close"}
           </Button>
         </Toolbar>
       </AppBar>
