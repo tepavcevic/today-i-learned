@@ -34,9 +34,9 @@ export default function Fact({ fact, setFacts }) {
       <ListItem
         sx={{
           display: "flex",
-          flexDirection: { xs: "column", lg: "row" },
-          alignItems: { xs: "flex-end", lg: "none" },
-          justifyContent: { xs: "", lg: "space-between" },
+          flexDirection: { xs: "column", md: "row" },
+          alignItems: { xs: "flex-end", md: "none" },
+          justifyContent: { xs: "", md: "space-between" },
         }}
       >
         <Box>

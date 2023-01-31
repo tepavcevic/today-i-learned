@@ -1,14 +1,9 @@
-import { Box, List, Typography } from "@mui/material";
+import { Box, List } from "@mui/material";
 import Fact from "./Fact";
+import NoFacts from "./NoFacts";
 
 export default function FactList({ facts, setFacts }) {
-  //makeshift solution, needs refactoring
-  if (facts.length === 0)
-    return (
-      <Typography>
-        There are no facts for this category.Feel free to add your own!
-      </Typography>
-    );
+  if (facts.length === 0) return <NoFacts />;
   return (
     <>
       <Box>

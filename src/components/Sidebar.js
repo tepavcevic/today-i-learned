@@ -51,7 +51,7 @@ export default function FactCategories({ setCurrentCategory }) {
           </ListItem>
         </Paper>
         <List>
-          <Paper elevation={3} sx={{ marginLeft: 1 }}>
+          <Paper variant="outlined" sx={{ marginLeft: 1 }}>
             {categories.map((text) => (
               <ListItem key={text} disablePadding>
                 <ListItemButton

@@ -14,6 +14,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentCategory, setCurrentCategory] = useState("all");
   const [showForm, setShowForm] = useState(false);
+  const [isCategoryEmpty, setIsCategoryEmpty] = useState(false);
   const handleNewFormToggle = () => {
     setShowForm((prevShowForm) => !prevShowForm);
   };
