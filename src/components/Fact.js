@@ -34,12 +34,16 @@ export default function Fact({ fact, setFacts }) {
       <ListItem
         sx={{
           display: "flex",
-          justifyContent: "space-between",
+          flexDirection: { xs: "column", lg: "row" },
+          alignItems: { xs: "flex-end", lg: "none" },
+          justifyContent: { xs: "", lg: "space-between" },
         }}
       >
         <Box>
           <ListItemText primary={fact.text} />
-          <Link href={fact.source}>(Source)</Link>
+          <Link href={fact.source} target="_blank">
+            (Source)
+          </Link>
         </Box>
 
         <Box

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Container } from "@mui/system";
+import { Box } from "@mui/system";
+import { ThemeProvider, CssBaseline } from "@mui/material";
+import theme from "../theme";
 import supabase from "../supabase";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
@@ -43,29 +45,30 @@ export default function App() {
 
   return (
     <>
-      <Header showForm={showForm} setShowForm={setShowForm} />
-      {showForm && (
-        <NewFactForm
-          setFacts={setFacts}
-          onNewFormToggle={handleNewFormToggle}
-        />
-      )}
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Header showForm={showForm} setShowForm={setShowForm} />
 
-      <Container
-        sx={{
-          display: "flex",
-          justifyContent: "start",
-          paddingTop: 5,
-          height: "95vh",
-        }}
-      >
-        <Sidebar setCurrentCategory={setCurrentCategory} />
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <FactList setFacts={setFacts} facts={facts} />
-        )}
-      </Container>
+        <Box
+          sx={{
+            marginLeft: { xs: "160px", md: "190px", lg: "220px" },
+            padding: { xs: 1, sm: 2, md: 3, lg: 5 },
+          }}
+        >
+          {showForm && (
+            <NewFactForm
+              setFacts={setFacts}
+              onNewFormToggle={handleNewFormToggle}
+            />
+          )}
+          <Sidebar setCurrentCategory={setCurrentCategory} />
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <FactList setFacts={setFacts} facts={facts} />
+          )}
+        </Box>
+      </ThemeProvider>
     </>
   );
 }

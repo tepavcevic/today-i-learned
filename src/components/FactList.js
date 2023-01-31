@@ -11,7 +11,7 @@ export default function FactList({ facts, setFacts }) {
     );
   return (
     <>
-      <Box sx={{ overflow: "scroll", paddingBottom: 40 }}>
+      <Box>
         <List sx={{ paddingTop: 0, marginLeft: 1 }}>
           {facts.map((fact) => (
             <Fact key={fact.id} fact={fact} setFacts={setFacts} />

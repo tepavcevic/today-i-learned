@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {
-  Container,
+  Box,
   TextField,
   Button,
   Select,
@@ -94,9 +94,9 @@ export default function NewFactForm({ setFacts, onNewFormToggle }) {
 
   return (
     <>
-      <Container>
+      <Box>
         <form onSubmit={handleSubmit}>
-          <Paper sx={{ paddingX: 2 }} variant="outlined">
+          <Paper sx={{ padding: 2, marginBottom: 5 }} variant="outlined">
             <FormControl fullWidth variant="outlined">
               <TextField
                 margin="normal"
@@ -152,7 +152,7 @@ export default function NewFactForm({ setFacts, onNewFormToggle }) {
             </FormControl>
           </Paper>
         </form>
-      </Container>
+      </Box>
     </>
   );
 }

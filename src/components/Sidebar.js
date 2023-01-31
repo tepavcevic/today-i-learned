@@ -1,14 +1,15 @@
 import * as React from "react";
 import {
+  Drawer,
   Paper,
-  Box,
   List,
   ListItem,
   ListItemButton,
   ListItemText,
 } from "@mui/material";
 
-const drawerWidth = 240;
+const drawerWidth = 220;
+
 const categories = [
   "technology",
   "science",
@@ -23,36 +24,47 @@ const categories = [
 export default function FactCategories({ setCurrentCategory }) {
   return (
     <>
-      <Box
+      <Drawer
+        variant="permanent"
+        anchor="left"
         sx={{
-          display: "flex",
-          maxWidth: drawerWidth,
+          width: { xs: "160px", md: "190px", lg: drawerWidth },
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: {
+            width: { xs: "160px", md: "190px", lg: drawerWidth },
+            boxSizing: "border-box",
+            borderWidth: 0,
+          },
         }}
       >
-        <Box sx={{ overflow: "auto", margin: 0 }}>
-          <Paper variant="outlined">
-            <ListItem key="all" disablePadding>
-              <ListItemButton onClick={() => setCurrentCategory("all")}>
-                <ListItemText primary="ALL" />
-              </ListItemButton>
-            </ListItem>
+        <Paper
+          variant="outlined"
+          sx={{
+            marginTop: { xs: "64px", sm: "80px", md: "88px", lg: "104px" },
+            marginLeft: 1,
+          }}
+        >
+          <ListItem key="all" disablePadding>
+            <ListItemButton onClick={() => setCurrentCategory("all")}>
+              <ListItemText primary="ALL" />
+            </ListItemButton>
+          </ListItem>
+        </Paper>
+        <List>
+          <Paper elevation={3} sx={{ marginLeft: 1 }}>
+            {categories.map((text) => (
+              <ListItem key={text} disablePadding>
+                <ListItemButton
+                  key={text}
+                  onClick={() => setCurrentCategory(text)}
+                >
+                  <ListItemText primary={text.toUpperCase()} />
+                </ListItemButton>
+              </ListItem>
+            ))}
           </Paper>
-          <List>
-            <Paper elevation={3}>
-              {categories.map((text) => (
-                <ListItem key={text} disablePadding>
-                  <ListItemButton
-                    key={text}
-                    onClick={() => setCurrentCategory(text)}
-                  >
-                    <ListItemText primary={text.toUpperCase()} />
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </Paper>
-          </List>
-        </Box>
-      </Box>
+        </List>
+      </Drawer>
     </>
   );
 }
