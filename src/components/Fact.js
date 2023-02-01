@@ -54,7 +54,13 @@ export default function Fact({ fact, setFacts }) {
           }}
         >
           <Chip label={fact.category} size="small" />
-          <Box display="flex">
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", voteSm: "row" },
+              justifyContent: { xs: "center", voteSm: "none" },
+            }}
+          >
             <Button
               disabled={isUpdating}
               onClick={() => handleVote("votesInteresting")}

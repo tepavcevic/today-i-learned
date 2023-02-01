@@ -11,7 +11,13 @@ export default function Header({ showForm, setShowForm }) {
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Box display="flex" alignItems="center">
             <Image src="logo.png" width={40} height={40} />
-            <Typography variant="h6" marginLeft={3}>
+            <Typography
+              variant="h5"
+              sx={{
+                display: { xs: "none", voteSm: "flex" },
+                marginLeft: { xs: 1, sm: 3 },
+              }}
+            >
               Today I Learned
             </Typography>
           </Box>

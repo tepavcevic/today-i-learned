@@ -28,10 +28,6 @@ export default function NewFactForm({ setFacts, onNewFormToggle }) {
     category: "",
   });
 
-  const text = fact.text;
-  const source = fact.source;
-  const category = fact.category;
-
   const handleFactChanged = (event) => {
     const { name, value } = event.target;
     setFact({
@@ -69,9 +65,9 @@ export default function NewFactForm({ setFacts, onNewFormToggle }) {
         .from("facts")
         .insert([
           {
-            text,
-            source,
-            category,
+            text: fact.text,
+            source: fact.source,
+            category: fact.category,
           },
         ])
         .select();

@@ -7,7 +7,7 @@ export default function FactList({ facts, setFacts }) {
   return (
     <>
       <Box>
-        <List sx={{ paddingTop: 0, marginLeft: 1 }}>
+        <List sx={{ padding: 0 }}>
           {facts.map((fact) => (
             <Fact key={fact.id} fact={fact} setFacts={setFacts} />
           ))}
